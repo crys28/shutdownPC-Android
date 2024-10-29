@@ -9,7 +9,7 @@ import paramiko
 
 class ShutdownyourPC(toga.App):
     def startup(self):
-        self.credentials_file = os.path.join(self.paths.app, 'credentials.json')
+        self.credentials_file = os.path.join(self.paths.cache, 'credentials.json')
 
         self.pc_list = self.load_pcs()  # Load the list of PCs
         self.password_visible = False  # Track password visibility
@@ -70,7 +70,7 @@ class ShutdownyourPC(toga.App):
     def command_update(self, widget):
         self.main_window.info_dialog(
                 'Notes',
-                'No updates yet!'
+                'Added feature to start Plex service!'
             ) 
     def command_important(self, widget):
         self.main_window.info_dialog(
