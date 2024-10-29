@@ -1,0 +1,193 @@
+# This project was generated with 0.3.20 using template: https://github.com/beeware/briefcase-template@v0.3.20
+[tool.briefcase]
+project_name = "shutdownPC"
+bundle = "com.example"
+version = "0.0.1"
+url = "https://example.com/shutdownyourpc"
+license.file = "LICENSE"
+author = "crys28"
+author_email = "insanityman_044@gmail.com"
+
+[tool.briefcase.app.shutdownyourpc]
+formal_name = "Shutdown your PC"
+description = "This app is designed to remotely shut down PCs via SSH, providing a straightforward interface to manage and control multiple computers. Technologies used - Python (primary development language); JSON (for data storage); Toga (BeeWare)- A cross-platform library used to create the graphical user interface, making the app work natively on both desktop and Android environments; Paramiko- A Python SSH library for secure, password-based remote connections to each PC; Briefcase (BeeWare)- For packaging the app across multiple platforms, including Android."
+long_description = "CONFIGURE SSH"
+sources = [
+    "src/shutdownyourpc",
+]
+test_sources = [
+    "tests",
+]
+
+requires = [
+   "paramiko"
+]
+test_requires = [
+    "pytest",
+]
+
+icon = "icons/helloworld"
+splash_background_color = "#343641"
+
+[tool.briefcase.app.shutdownyourpc.macOS]
+universal_build = true
+requires = [
+    "toga-cocoa~=0.4.7",
+    "std-nslog~=1.0.3",
+]
+
+[tool.briefcase.app.shutdownyourpc.linux]
+requires = [
+    "toga-gtk~=0.4.7",
+]
+
+[tool.briefcase.app.shutdownyourpc.linux.system.debian]
+system_requires = [
+    # Needed to compile pycairo wheel
+    "libcairo2-dev",
+    # Needed to compile PyGObject wheel
+    "libgirepository1.0-dev",
+]
+
+system_runtime_requires = [
+    # Needed to provide GTK and its GI bindings
+    "gir1.2-gtk-3.0",
+    "libgirepository-1.0-1",
+    # Dependencies that GTK looks for at runtime
+    "libcanberra-gtk3-module",
+    # Needed to provide WebKit2 at runtime
+    # Note: Debian 11 and Ubuntu 20.04 require gir1.2-webkit2-4.0 instead
+    # "gir1.2-webkit2-4.1",
+]
+
+[tool.briefcase.app.shutdownyourpc.linux.system.rhel]
+system_requires = [
+    # Needed to compile pycairo wheel
+    "cairo-gobject-devel",
+    # Needed to compile PyGObject wheel
+    "gobject-introspection-devel",
+]
+
+system_runtime_requires = [
+    # Needed to support Python bindings to GTK
+    "gobject-introspection",
+    # Needed to provide GTK
+    "gtk3",
+    # Dependencies that GTK looks for at runtime
+    "libcanberra-gtk3",
+    # Needed to provide WebKit2 at runtime
+    # "webkit2gtk3",
+]
+
+[tool.briefcase.app.shutdownyourpc.linux.system.suse]
+system_requires = [
+    # Needed to compile pycairo wheel
+    "cairo-devel",
+    # Needed to compile PyGObject wheel
+    "gobject-introspection-devel",
+]
+
+system_runtime_requires = [
+    # Needed to provide GTK
+    "gtk3",
+    # Needed to support Python bindings to GTK
+    "gobject-introspection", "typelib(Gtk) = 3.0",
+    # Dependencies that GTK looks for at runtime
+    "libcanberra-gtk3-module",
+    # Needed to provide WebKit2 at runtime
+    # "libwebkit2gtk3", "typelib(WebKit2)",
+]
+
+[tool.briefcase.app.shutdownyourpc.linux.system.arch]
+system_requires = [
+    # Needed to compile pycairo wheel
+    "cairo",
+    # Needed to compile PyGObject wheel
+    "gobject-introspection",
+    # Runtime dependencies that need to exist so that the
+    # Arch package passes final validation.
+    # Needed to provide GTK
+    "gtk3",
+    # Dependencies that GTK looks for at runtime
+    "libcanberra",
+    # Needed to provide WebKit2
+    # "webkit2gtk",
+]
+
+system_runtime_requires = [
+    # Needed to provide GTK
+    "gtk3",
+    # Needed to provide PyGObject bindings
+    "gobject-introspection-runtime",
+    # Dependencies that GTK looks for at runtime
+    "libcanberra",
+    # Needed to provide WebKit2 at runtime
+    # "webkit2gtk",
+]
+
+[tool.briefcase.app.shutdownyourpc.linux.appimage]
+manylinux = "manylinux_2_28"
+
+system_requires = [
+    # Needed to compile pycairo wheel
+    "cairo-gobject-devel",
+    # Needed to compile PyGObject wheel
+    "gobject-introspection-devel",
+    # Needed to provide GTK
+    "gtk3-devel",
+    # Dependencies that GTK looks for at runtime, that need to be
+    # in the build environment to be picked up by linuxdeploy
+    "libcanberra-gtk3",
+    "PackageKit-gtk3-module",
+    "gvfs-client",
+]
+
+linuxdeploy_plugins = [
+    "DEPLOY_GTK_VERSION=3 gtk",
+]
+
+[tool.briefcase.app.shutdownyourpc.linux.flatpak]
+flatpak_runtime = "org.gnome.Platform"
+flatpak_runtime_version = "47"
+flatpak_sdk = "org.gnome.Sdk"
+
+[tool.briefcase.app.shutdownyourpc.windows]
+requires = [
+    "toga-winforms~=0.4.7",
+]
+
+# Mobile deployments
+[tool.briefcase.app.shutdownyourpc.iOS]
+requires = [
+    "toga-iOS~=0.4.7",
+    "std-nslog~=1.0.3",
+]
+
+[tool.briefcase.app.shutdownyourpc.android]
+requires = [
+    "toga-android~=0.4.7",
+]
+
+permissions = [
+    "android.permission.INTERNET",
+    "android.permission.ACCESS_NETWORK_STATE",  # Optional, for network state access
+    # Add other permissions as needed
+]
+
+base_theme = "Theme.MaterialComponents.Light.DarkActionBar"
+
+build_gradle_dependencies = [
+    "com.google.android.material:material:1.12.0",
+    # Needed for DetailedList
+    # "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0",
+    # Needed for MapView
+    # "org.osmdroid:osmdroid-android:6.1.20",
+]
+
+# Web deployments
+[tool.briefcase.app.shutdownyourpc.web]
+requires = [
+    "toga-web~=0.4.7",
+]
+style_framework = "Shoelace v2.3"
+
