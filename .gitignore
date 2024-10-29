@@ -20,6 +20,8 @@ __pycache__/
 .VolumeIcon.icns
 .com.apple.timemachine.donotpresent
 
+*.json
+
 # Directories potentially created on remote AFP share
 .AppleDB
 .AppleDesktop

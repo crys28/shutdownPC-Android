@@ -1,5 +1,6 @@
 import asyncio
 import json
+import time
 import os
 import toga
 from toga.style import Pack
@@ -8,7 +9,7 @@ import paramiko
 
 class ShutdownyourPC(toga.App):
     def startup(self):
-        self.credentials_file = os.path.join(self.paths.cache, 'credentials.json')
+        self.credentials_file = os.path.join(self.paths.app, 'credentials.json')
 
         self.pc_list = self.load_pcs()  # Load the list of PCs
         self.password_visible = False  # Track password visibility
@@ -175,6 +176,11 @@ class ShutdownyourPC(toga.App):
             style=Pack(padding=10, background_color='#252526', color='white')
         ) if pc and self.current_pc else None
 
+        self.plex_button = toga.Button(
+            'Start PLEX', on_press=lambda widget: self.plex_pc(pc),
+            style=Pack(padding=10, background_color='#252526', color='#E6AF2E')
+        ) if pc and self.current_pc else None
+
         # Add all components to the form box
         self.pc_form_box.add(toga.Label('PC Name:', style=Pack(padding=(0, 5),background_color='#343641', color='gray')))
         self.pc_form_box.add(self.name_input)
@@ -194,6 +200,9 @@ class ShutdownyourPC(toga.App):
 
         if self.shutdown_button:
             self.pc_form_box.add(self.shutdown_button)
+
+        if self.plex_button:
+            self.pc_form_box.add(self.plex_button)
 
         self.pc_form_box.add(self.cancel_button)
 
@@ -287,9 +296,9 @@ class ShutdownyourPC(toga.App):
 
             # Execute the SSH command
             stdin, stdout, stderr = client.exec_command(command)
-            output = stdout.read().decode()
+            # await asyncio.sleep(10)
+            # output = stdout.read().decode()
             error = stderr.read().decode()
-
             if error:
                 self.main_window.info_dialog('Error', f"Failed: {error}")
             else:
@@ -297,11 +306,14 @@ class ShutdownyourPC(toga.App):
                     self.main_window.info_dialog('Success', 'PC shutdown successfully!')
                 elif desc == "sleep":
                     self.main_window.info_dialog('Success', 'PC went to sleep successfully!')
+                elif desc == "plex":
+                    self.main_window.info_dialog('Success', 'Plex service started successfully!')
                 else:
                     self.main_window.info_dialog('Success', 'Command executed successfully!')
         except Exception as e:
             self.main_window.info_dialog('Error', f"Failed to connect: {str(e)}")
         finally:
+            # 
             await self.hide_loader()  # Hide the loading screen after completion
             client.close()
 
@@ -310,7 +322,11 @@ class ShutdownyourPC(toga.App):
        
     def sleep_pc(self, pc):
         """Initiates the SSH sleep command in the background."""
-        asyncio.ensure_future(self.perform_ssh_task(pc, 'shutdown /h', 'sleep')) 
+        asyncio.ensure_future(self.perform_ssh_task(pc, 'shutdown /h', 'sleep'))
+
+    def plex_pc(self, pc):
+        """Initiates the Start plex service command in the background."""
+        asyncio.ensure_future(self.perform_ssh_task(pc, 'schtasks /run /i /TN plexStart', 'plex')) 
 
     def delete_pc(self, pc):
         """Delete the selected PC from the list and update the JSON file."""
